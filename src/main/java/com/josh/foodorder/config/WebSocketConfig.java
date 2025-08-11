@@ -18,8 +18,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
+        // Native WebSocket (negotiates permessage-deflate)
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("http://localhost:5173")
+                .setAllowedOriginPatterns("*");
+
+        // SockJS fallback (no permessage-deflate)
+        registry.addEndpoint("/ws-sockjs")
+                .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
 }
