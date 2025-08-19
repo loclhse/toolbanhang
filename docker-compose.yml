@@ -4,7 +4,15 @@ services:
     build: .
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATA_MONGODB_URI=mongodb://app:1234567890@mongo:27017/ChaoLongTool?authSource=ChaoLongTool
     ports:
       - "80:8080"
+    depends_on:
+      - mongo
     restart: unless-stopped
 
+  mongo:
+    image: mongo:7
+    volumes:
+      - ./mongo-data:/data/db
+    restart: unless-stopped
