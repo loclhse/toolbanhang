@@ -3,7 +3,7 @@ services:
     image: mongo:7
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=l@c123
+      - MONGO_INITDB_ROOT_PASSWORD=l%40c123
     volumes:
       - ./mongo-data:/data/db
     restart: unless-stopped
