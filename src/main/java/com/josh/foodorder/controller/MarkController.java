@@ -1,6 +1,7 @@
 package com.josh.foodorder.controller;
 
 import com.josh.foodorder.dto.ErrorResponse;
+import com.josh.foodorder.dto.request.ItemMarkEvent;
 import com.josh.foodorder.dto.request.MarkItemRequestDTO;
 import com.josh.foodorder.dto.response.MarkItemResponseDTO;
 
@@ -8,17 +9,24 @@ import com.josh.foodorder.service.MarkService;
 import com.josh.foodorder.domain.model.OrderItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000"})
 public class MarkController {
 
     @Autowired
     private MarkService markService;
+
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
+    public MarkController(SimpMessagingTemplate simpMessagingTemplate) {
+        this.simpMessagingTemplate = simpMessagingTemplate;
+    }
 
     @PostMapping("/{orderId}/items/{itemId}/mark")
     public ResponseEntity<?> markItem(
@@ -51,5 +59,10 @@ public class MarkController {
             return ResponseEntity.badRequest()
                     .body(new ErrorResponse("Failed to get order items: " + e.getMessage()));
         }
+    }
+
+    @MessageMapping("/order-item-marks")
+    public void onMark(ItemMarkEvent evt) {
+        simpMessagingTemplate.convertAndSend("/topic/order-item-marks", evt);
     }
 }
