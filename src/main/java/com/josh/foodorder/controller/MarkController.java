@@ -14,6 +14,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -65,4 +66,10 @@ public class MarkController {
     public void onMark(ItemMarkEvent evt) {
         simpMessagingTemplate.convertAndSend("/topic/order-item-marks", evt);
     }
+
+    @MessageMapping("/ping")
+    public void ping(Map<String, Object> payload) {
+        simpMessagingTemplate.convertAndSend("/topic/pong", payload);
+    }
+
 }

@@ -37,7 +37,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Bean
     public ThreadPoolTaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-        scheduler.setPoolSize(1); // Giảm từ 2 xuống 1
+        scheduler.setPoolSize(4); // Giảm từ 2 xuống 1
         scheduler.setThreadNamePrefix("websocket-heartbeat-");
         scheduler.initialize();
         return scheduler;
