@@ -46,7 +46,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
                 registry.addEndpoint("/ws")
-                        .setAllowedOrigins("*")
+                        .setAllowedOrigins("http://103.90.227.18:82")
                         .withSockJS()
                         .setHeartbeatTime(25000)
                         .setDisconnectDelay(5000);
